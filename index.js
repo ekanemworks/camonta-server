@@ -78,11 +78,11 @@ io.on('connection', (socket) => {
 
 mysqlConnectionfidsbay.connect((err) => {
     if (!err) {
-        console.log('Database Connected');
+        console.log('Database Connected To Server');
         console.log('...');
     }else{
         console.log(err)
-        console.log('Error dey o: Db not connecting to node server');
+        console.log('Database not connected to server');
     }
 });
 
@@ -92,7 +92,7 @@ mysqlConnectionfidsbay.connect((err) => {
 // RUN ON LOCAL MACHINE
 // app.listen(3000, '192.168.0.126', ()=> console.log("App server running on IP")); // COUSANT WIFI
 // app.listen(3000, '192.168.8.197', ()=> console.log("App server running on IP")); // COMPOSITE WIFI
-app.listen(3000, ()=> console.log("App server running on IP")); // WITHOUT WIFI
+app.listen(3000, ()=> console.log("Main server running on localhost")); // WITHOUT WIFI
 
 
 
@@ -102,7 +102,7 @@ app.listen(3000, ()=> console.log("App server running on IP")); // WITHOUT WIFI
 
 
 app.get('/',(req,res) => {
-    res.send('The App')
+    res.send('Camonta Server')
 })
 
 
