@@ -36,17 +36,7 @@ const router = express.Router();
 
 
 
-router.use('/api1.0/test', require('./test'));
 router.use('/api1.0/signup', require('./signup'));
-router.use('/api1.0/login', require('./login'));
-router.use('/api1.0/editprofile', require('./editprofile'));
-router.use('/api1.0/settings', require('./settings'));
-router.use('/api1.0/status', require('./status'));
-router.use('/api1.0/makefriends', require('./makefriends'));
-router.use('/api1.0/makefriendsFilterRoom', require('./makefriendsFilterRoom'));
-router.use('/api1.0/notifications', require('./notifications'));
-router.use('/api1.0/contacts', require('./contacts'));
-router.use('/api1.0/ALGORITHM', require('./ALGORITHM'));
 
 
 

@@ -31,47 +31,24 @@ var transporter = nodemailer.createTransport({
 
 router.use(cors()); 
 
-
-
-        router.get('/signupCriteria', (req,res) => {
-  
-            const sqlconst = "SELECT * FROM signup_criteria WHERE id=1";
-         
-                    try {
-                        mysqlConnectionfidsbay.query(sqlconst,function (err,result2,fields) {
-                                           
-
-                            // console.log(JSON.parse(result2[0].countries));
-                            // res.send(JSON.parse(result2[0].countries))
-
-                            // console.log(result2[0]);
-                            res.send(result2[0]);
-                  
-                        });
-                    } catch (error) {
-                        
-                    }
-                    
-        
-        
-        });   
         
         
 
 
 
 
-    router.post('/addMember', (req,res) => {
+    router.post('/createAccount', (req,res) => {
   
         // SQL_STATEMENTS
         const sql_check_email = "SELECT * FROM members WHERE email = ?";
+        const sql_check_username = "SELECT * FROM members WHERE userName = ?";
 
             try {
-                mysqlConnectionfidsbay.query(sql_check_email,[req.body.email],function (err,result1,fields) {
+                mysqlConnectionfidsbay.query(sql_check_email,[req.body.email],function (err,emailCheckResult,fields) {
                   
-                    if (result1.length == 0) {
+                    if (emailCheckResult.length == 0) {
                         // NEW VALUES
-                        var newsession = uuidv4()+'baybn';
+                        var newsession = uuidv4();
                         var datetime = new Date();
                         var dateregistered = date.format(datetime, 'ddd, MMM DD YYYY');
                         var currentdate = date.format(datetime, 'YYYY');
@@ -220,37 +197,20 @@ router.use(cors());
             } catch (error) {
                 console.log(error);   
             }
-        // confirmation
+            // confirmation
 
         
         
-        });   
+    });   
 
     
         
 
-        router.get('/setupInterests', (req,res) => {
-           
-            const sqlconst = "SELECT * FROM signup_interest";
-         
-            try {
-                mysqlConnectionfidsbay.query(sqlconst,function (err,result1,fields) {
-                    res.send(result1);
-                });
-
-            } catch (error) {
-                
-            }
-  
-        
-        
-        });  
-
-
-    
-        
-
-        router.post('/addInterests', (req,res) => {
+    // ADD FOOD INTERESTS
+    // ADD FOOD INTERESTS
+    // ADD FOOD INTERESTS
+    // ADD FOOD INTERESTS
+    router.post('/addInterests', (req,res) => {
            
             const sql_interests = "UPDATE members SET interests = ? WHERE session = ? ";
             var myinterest =  req.body.myinterest;
@@ -280,7 +240,7 @@ router.use(cors());
   
         
         
-        });  
+    });  
 
 
 
