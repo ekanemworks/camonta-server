@@ -38,24 +38,30 @@ router.use(cors());
 
 
     router.post('/createAccount', (req,res) => {
+
+        console.log('pass 1');
   
         // SQL_STATEMENTS
-        const sql_check_email = "SELECT * FROM members WHERE email = ?";
-        const sql_check_username = "SELECT * FROM members WHERE userName = ?";
+        const sql_check_email = "SELECT * FROM members WHERE profileEmail = ?";
+        const sql_check_username = "SELECT * FROM members WHERE profileUsername = ?";
 
             // CHECK EMAIL QUERY
             try {
-                mysqlConnectionfidsbay.query(sql_check_email,[req.body.email],function (err,emailCheckResult,fields) {
-                  
+                mysqlConnectionfidsbay.query(sql_check_email,[req.body.profileEmail],function (err,emailCheckResult,fields) {
+                    console.log('pass 2');
+
                     // Confirm Email Statment
                     if (emailCheckResult.length == 0) {
+                        console.log('pass 3');
 
                         // CHECK USERNAME QUERY
                         try {
-                            mysqlConnectionfidsbay.query(sql_check_username,[req.body.email],function (err,checkUsernameResult,fields) { 
+                            mysqlConnectionfidsbay.query(sql_check_username,[req.body.profileUsername],function (err,checkUsernameResult,fields) { 
+                                console.log('pass 4');
 
                                 // Confirm username Statment
                                 if (checkUsernameResult.length == 0) {
+                                    console.log('pass 5');
 
                                     var profileType         = req.body.profileType
                                     var profileSession      = uuidv4()
@@ -96,47 +102,51 @@ router.use(cors());
 
                                     // INSERT QUERY
                                     try {
-                                        mysqlConnectionfidsbay.query(sql_create_new_user,escape_signup_array,function (err,result2,fields) {
+                                        mysqlConnectionfidsbay.query(sql_create_account,escape_Signup_List,function (err,result2,fields) {
+                                            console.log('pass 6');
 
                                             if (!err) {
+                                                console.log('pass 7');
+
                                                 // Getting back the values to retrieve the user ID also
-                                                const sql_get_new_user = "SELECT * FROM members WHERE session = ?";
+                                                const sql_get_new_user = "SELECT * FROM members WHERE profileSession = ?";
                                                 mysqlConnectionfidsbay.query(sql_get_new_user,[profileSession],function (err,result3,fields) {
 
 
                                                     if (!err) {
+                                                        console.log(result3);
                                                                 
-                                                        var mailOptions = {
-                                                            from: 'no-reply@fidsbay.com',
-                                                            to: req.body.profileEmail,
-                                                            subject: 'Your New Baybn Account',
-                                                            html:  '<h1>Welcome to Baybn</h1> \
-                                                                    <div style="font-size:16px">\
-                                                                    \
-                                                                    <div>Hi '+req.body.profileName+',</div>  \
-                                                                    </div>\
-                                                                    '
-                                                        }
-                                                        try {
+                                                        // var mailOptions = {
+                                                        //     from: 'no-reply@fidsbay.com',
+                                                        //     to: req.body.profileEmail,
+                                                        //     subject: 'Your New Baybn Account',
+                                                        //     html:  '<h1>Welcome to Baybn</h1> \
+                                                        //             <div style="font-size:16px">\
+                                                        //             \
+                                                        //             <div>Hi '+req.body.profileName+',</div>  \
+                                                        //             </div>\
+                                                        //             '
+                                                        // }
+                                                        // try {
                                                 
-                                                            transporter.sendMail(mailOptions, function(error,info){
+                                                        //     transporter.sendMail(mailOptions, function(error,info){
                                                                     
-                                                                bodyResponse = {
-                                                                    status: 'ok',
-                                                                    body: {id: result3[0].id, session: newsession, username: result3[0].username},
+                
+                                                        //     });
+                                                        // } catch (error) {
+                                                            
+                                                        //     res.send({status: 'error'});
+                                                        // }
+
+                                                                dataResponse = {
+                                                                    status: 'OK',
+                                                                    body: result3[0],
                                                                     direction: 'setup',
-                                                                    message: 'signup successful'
+                                                                    message: 'Signup successful'
                                                                 }
                                                                 // console.log(bodyResponse);
             
-                                                                res.send(bodyResponse);
-                
-                                                            });
-                                                        } catch (error) {
-                                                            
-                                                            res.send({status: 'error'});
-                                                        }
-
+                                                                res.send(dataResponse);
 
                                                     }else{
                                                         
@@ -145,7 +155,9 @@ router.use(cors());
 
                                                 });
 
-                                            }            
+                                            }else{
+                                                console.log(err);
+                                            }          
 
                                         });
                                     } catch (error) {

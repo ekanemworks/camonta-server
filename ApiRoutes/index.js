@@ -37,6 +37,7 @@ const router = express.Router();
 
 
 router.use('/api1.0/signup', require('./signup'));
+router.use('/api1.0/login', require('./login'));
 
 
 
