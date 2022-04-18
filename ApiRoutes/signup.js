@@ -39,7 +39,7 @@ router.use(cors());
 
     router.post('/createAccount', (req,res) => {
 
-        console.log('pass 1');
+        // console.log('pass 1');
   
         // SQL_STATEMENTS
         const sql_check_email = "SELECT * FROM members WHERE profileEmail = ?";
@@ -48,20 +48,20 @@ router.use(cors());
             // CHECK EMAIL QUERY
             try {
                 mysqlConnectionfidsbay.query(sql_check_email,[req.body.profileEmail],function (err,emailCheckResult,fields) {
-                    console.log('pass 2');
+                    // console.log('pass 2');
 
                     // Confirm Email Statment
                     if (emailCheckResult.length == 0) {
-                        console.log('pass 3');
+                        // console.log('pass 3');
 
                         // CHECK USERNAME QUERY
                         try {
                             mysqlConnectionfidsbay.query(sql_check_username,[req.body.profileUsername],function (err,checkUsernameResult,fields) { 
-                                console.log('pass 4');
+                                // console.log('pass 4');
 
                                 // Confirm username Statment
                                 if (checkUsernameResult.length == 0) {
-                                    console.log('pass 5');
+                                    // console.log('pass 5');
 
                                     var profileType         = req.body.profileType
                                     var profileSession      = uuidv4()
@@ -74,12 +74,14 @@ router.use(cors());
                                     var password            = md5(req.body.password);
                                     var registrationDate    = date.format(new Date(), 'ddd, MMM DD YYYY');
                                     var notification        = JSON.stringify([])
-                                    var myOrders            = JSON.stringify([])
-                                    var profileLikeIdArray  = JSON.stringify([])
-                                    var profileServes       = 0
-                                    var profilePoints       = 0.0
+                                    var myProductCount      = 0
+                                    var myPurchase          = JSON.stringify([])
+                                    var profileLikeForIdList    = JSON.stringify([])
+                                    var profileLikeByIdList     = JSON.stringify([])
+                                    var profileServes           = 0
+                                    var profilePoints           = 0.0
 
-                                    // 16 COLUMNS IN DB (INCLUDING ID): 15 values in LIST below
+                                    // 18 COLUMNS IN DB (INCLUDING ID): 17 values in LIST below
                                     var escape_Signup_List = [
                                         profileType,
                                         profileSession,
@@ -92,13 +94,15 @@ router.use(cors());
                                         password,
                                         registrationDate,
                                         notification,
-                                        myOrders,
-                                        profileLikeIdArray,
+                                        myProductCount,
+                                        myPurchase,
+                                        profileLikeForIdList,
+                                        profileLikeByIdList,
                                         profileServes,
                                         profilePoints
                                     ];
 
-                                    const sql_create_account = "INSERT INTO members VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                                    const sql_create_account = "INSERT INTO members VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
                                     // INSERT QUERY
                                     try {

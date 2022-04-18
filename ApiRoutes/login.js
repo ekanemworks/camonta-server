@@ -59,16 +59,16 @@ router.use(cors());
                         direction: 'setup',
                         message: 'Login successful'
                     }                    
-                    console.log(dataResponse);
+                    // console.log(dataResponse);
 
                     res.send(dataResponse)
 
                 }else{
                     dataResponse = {
                         status: 'error',
-                        message: 'Wrong email, phone no or password'
+                        message: 'Wrong Email or Password'
                     }
-                    console.log(dataResponse);
+                    // console.log(dataResponse);
 
                     res.send(dataResponse)
                 }
