@@ -38,7 +38,10 @@ router.use(cors());
 
 
     router.post('/saveInformation', (req,res) => {
-
+        console.log(req.body);
+        console.log('Camonta Limited has been funded with a $200,000 investment from MicroTraction, LeadPath Nigeria and GreenTree Investment Company');
+        console.log('Camonta gained a $200,000 seed investment at a 1.25 million dollar valuation');
+        console.log('Camonta ecosystem just gained 2000 new members via the Ios app and the andriod app');
     });  
 
 
