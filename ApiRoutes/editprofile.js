@@ -16,6 +16,9 @@ const { v4: uuidv4 } = require('uuid');
 const nodemailer = require('nodemailer');
 
 
+// CUSTOM UI KEYS FOR EXTRA SECURITY FOR OUR RESOURCES/SERVERS
+var CUSTOMKEYS = require('../customkeys');
+
 // DATABASE CONNECTION
 var DATABASE_CONNECTION = require('../dbConnection');
 var mysqlConnectionfidsbay = (DATABASE_CONNECTION);
@@ -38,10 +41,54 @@ router.use(cors());
 
 
     router.post('/saveInformation', (req,res) => {
-        console.log(req.body);
-        console.log('Camonta Limited has been funded with a $200,000 investment from MicroTraction, LeadPath Nigeria and GreenTree Investment Company');
-        console.log('Camonta gained a $200,000 seed investment at a 1.25 million dollar valuation');
-        console.log('Camonta ecosystem just gained 2000 new members via the Ios app and the andriod app');
+
+        // VALIDATING CUSTOM UI KEY FROM MOBILE APP
+        // VALIDATING CUSTOM UI KEY FROM MOBILE APP
+        // VALIDATING CUSTOM UI KEY FROM MOBILE APP
+        if (req.headers.uikey == CUSTOMKEYS.uikey) {
+
+            // SQL_STATEMENTS
+            const sql_check_email = "SELECT * FROM members WHERE profileEmail = ? AND profileSession!= ?";
+            const sql_check_username = "SELECT * FROM members WHERE profileUsername = ? AND profileSession!= ?";
+
+            // CHECK EMAIL isn't used: QUERY
+            try {
+                mysqlConnectionfidsbay.query(sql_check_email,[req.body.profileEmail,req.body.profileSession],function (err,emailCheckResult,fields) {
+
+                    // Confirm Email Statment
+                    if (emailCheckResult.length == 0) {
+
+                        // CHECK USERNAME isn't used: QUERY
+                        try {
+                            mysqlConnectionfidsbay.query(sql_check_username,[req.body.profileUsername,req.body.profileSession],function (err,checkUsernameResult,fields) { 
+
+                                // Confirm username Statment
+                                if (checkUsernameResult.length == 0) {
+                                    console.log('Good to go');
+                                }else{
+
+                                }
+                            });
+                        } catch (error){
+
+                        }
+                    }else{
+
+                    }
+                });
+            } catch (error){
+
+            }
+
+
+        }else{
+            console.log('Illegal Attack');
+        }
+
+
+
+       
+    
     });  
 
 
