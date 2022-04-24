@@ -59,7 +59,7 @@ router.use(cors());
                     dataResponse = {
                         status: 'ok',
                         body: result1[0],
-                        direction: 'setup',
+                        direction: 'home',
                         message: 'Login successful'
                     }                    
                     // console.log(dataResponse);

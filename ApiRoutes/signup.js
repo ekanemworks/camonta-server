@@ -42,7 +42,7 @@ router.use(cors());
 
     router.post('/createAccount', (req,res) => {
 
-        // console.log('pass 1');
+        console.log('pass 1');
   
         // SQL_STATEMENTS
         const sql_check_email = "SELECT * FROM members WHERE profileEmail = ?";
@@ -51,20 +51,20 @@ router.use(cors());
             // CHECK EMAIL QUERY
             try {
                 mysqlConnectionfidsbay.query(sql_check_email,[req.body.profileEmail],function (err,emailCheckResult,fields) {
-                    // console.log('pass 2');
+                    console.log('pass 2');
 
                     // Confirm Email Statment
                     if (emailCheckResult.length == 0) {
-                        // console.log('pass 3');
+                        console.log('pass 3');
 
                         // CHECK USERNAME QUERY
                         try {
                             mysqlConnectionfidsbay.query(sql_check_username,[req.body.profileUsername],function (err,checkUsernameResult,fields) { 
-                                // console.log('pass 4');
+                                console.log('pass 4');
 
                                 // Confirm username Statment
                                 if (checkUsernameResult.length == 0) {
-                                    // console.log('pass 5');
+                                    console.log('pass 5');
 
                                     var profileType         = req.body.profileType
                                     var profileSession      = uuidv4()
@@ -146,9 +146,9 @@ router.use(cors());
                                                         // }
 
                                                                 dataResponse = {
-                                                                    status: 'OK',
+                                                                    status: 'ok',
                                                                     body: result3[0],
-                                                                    direction: 'setup',
+                                                                    direction: 'home',
                                                                     message: 'Signup successful'
                                                                 }
                                                                 // console.log(bodyResponse);
