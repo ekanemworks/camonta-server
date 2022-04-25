@@ -42,10 +42,18 @@ router.use(cors());
 
     router.post('/saveInformation', (req,res) => {
 
-        // VALIDATING CUSTOM UI KEY FROM MOBILE APP
-        // VALIDATING CUSTOM UI KEY FROM MOBILE APP
-        // VALIDATING CUSTOM UI KEY FROM MOBILE APP
+        // SECURITY PROTOCOL 1: VALIDATING CUSTOM UI KEY FROM MOBILE APP
+        // SECURITY PROTOCOL 1: VALIDATING CUSTOM UI KEY FROM MOBILE APP
+        // SECURITY PROTOCOL 1: VALIDATING CUSTOM UI KEY FROM MOBILE APP
         if (req.headers.uikey == CUSTOMKEYS.uikey) {
+
+            var escape_update_profile_input = [
+                req.body.profileName,
+                req.body.profileUsername,
+                req.body.profileBio,
+                req.body.profileEmail,
+                req.body.profileSession
+            ]
 
             // SQL_STATEMENTS
             const sql_check_email = "SELECT * FROM members WHERE profileEmail = ? AND profileSession!= ?";
@@ -64,15 +72,70 @@ router.use(cors());
 
                                 // Confirm username Statment
                                 if (checkUsernameResult.length == 0) {
-                                    console.log('Good to go');
-                                }else{
 
+                                    // TO CHECK IF THERE IS SPACE IN THE USERNAME STRING
+                                    // TO CHECK IF THERE IS SPACE IN THE USERNAME STRING
+                                    var space_check = req.body.profileUsername.indexOf(' ');
+                                    if (space_check == -1) {
+                                        try {
+
+                                            const sql_update_profile_info = "UPDATE members SET profileName=?, profileUsername=?, profileBio=?, profileEmail=? WHERE profileSession=?"
+                                            mysqlConnectionfidsbay.query(sql_update_profile_info,escape_update_profile_input,function (err,rows,fields) {
+                            
+
+                                                // To send back to update localstorage
+                                                const sql_get_user_info = "SELECT * FROM members WHERE profileSession=?";
+                                                mysqlConnectionfidsbay.query(sql_get_user_info,[req.body.profileSession],function (err,resultbody,fields) {
+                                                    console.log(resultbody)
+                                                    dataResponse = {
+                                                        status: 'ok',
+                                                        body: resultbody[0],
+                                                        direction: 'editprofile',
+                                                        message: 'update successful'
+                                                    }                    
+                                                    res.send(dataResponse)
+                                                
+                                                });
+
+                                            });
+                                        } catch (error) {
+                                            
+                                        }
+                                    }else{
+
+                                        dataResponse = {
+                                            status: 'error',
+                                            // body: result1[0],
+                                            direction: 'editprofile',
+                                            message: 'username must not have space in it'
+                                        }                    
+                                        res.send(dataResponse)
+
+                                    }
+
+
+                                    
+                                }else{
+                                    dataResponse = {
+                                        status: 'error',
+                                        // body: result1[0],
+                                        direction: 'editprofile',
+                                        message: 'Username is taken!'
+                                    }                    
+                                    res.send(dataResponse)
                                 }
                             });
                         } catch (error){
 
                         }
                     }else{
+                        dataResponse = {
+                            status: 'error',
+                            // body: result1[0],
+                            direction: 'editprofile',
+                            message: 'Email is already in use!'
+                        }                    
+                        res.send(dataResponse)
 
                     }
                 });
