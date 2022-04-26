@@ -68,7 +68,12 @@ router.use(cors());
                                     if (checkUsernameResult.length == 0) {
                                         console.log('pass 5');
 
-                                        var profileType         = req.body.profileType
+                                        if (req.body.profileType == 'Chef / Catering') {
+                                            var profileType         = 'Chef'
+                                        }else{
+                                            var profileType         = req.body.profileType
+                                        }
+
                                         var profileSession      = uuidv4()
                                         var profileName         = req.body.profileName
                                         var profileUsername     = req.body.profileUsername
@@ -176,7 +181,7 @@ router.use(cors());
                                     }else{
 
                                         bodyResponse = {
-                                            status: 'ok',
+                                            status: 'error',
                                             session: '',
                                             direction: '',
                                             message: 'Username already taken'
@@ -196,7 +201,7 @@ router.use(cors());
                         }else{
 
                             bodyResponse = {
-                                status: 'ok',
+                                status: 'error',
                                 session: '',
                                 direction: '',
                                 message: 'Email already used'
