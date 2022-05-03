@@ -108,3 +108,94 @@ app.get('/',(req,res) => {
 
 
 
+// FOR UPDATE PROFILE PHOTO
+// FOR UPDATE PROFILE PHOTO
+// FOR UPDATE PROFILE PHOTO
+// FOR UPDATE PROFILE PHOTO
+// FOR UPDATE PROFILE PHOTO
+app.post('/updateProfilePhoto', (req, res) => {
+    var base64ImageVariable =  req.body.image;
+    var userid = req.body.userid;
+    var randomvariable = uuidv4();
+    randomvariable = randomvariable.substr(0,4);
+    var imagePathOnDB = '';
+ 
+ 
+ 
+             // function to decode base64
+             // function to decode base64
+             function decodeBase64Image(dataString) {
+                 // var matches = dataString.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/),
+                 // response = {};
+             
+                 // if (matches.length !== 3) {
+                 // return new Error('Invalid input string');
+                 // }
+             
+                 // response.type = matches[1];
+                 response = new Buffer.from(dataString, 'base64');
+             
+                 return response;
+             }
+             // end of function to decode base64
+             // end of function to decode base64
+ 
+         var decodedImg = decodeBase64Image(base64ImageVariable);
+         var imageBuffer = decodedImg;
+         
+ 
+             
+  
+                     var curr_img_a = __dirname+'/profilephotos'+'/'+ 'user_'+userid+'_CODE_A.jpg';
+                     var curr_img_b = __dirname+'/profilephotos'+'/'+ 'user_'+userid+'_CODE_B.jpg';
+     
+                     if (fs.existsSync(curr_img_a)) {
+                   
+                         fs.unlinkSync(curr_img_a);
+                         fs.writeFileSync(curr_img_b, imageBuffer, 'utf8');
+                         imagePathOnDB = 'profilephotos'+'/'+ 'user_'+userid+'_CODE_B.jpg';
+                        
+                     }else if(fs.existsSync(curr_img_b)){
+                         
+                         fs.unlinkSync(curr_img_b);
+                         fs.writeFileSync(curr_img_a, imageBuffer, 'utf8');
+                         imagePathOnDB = 'profilephotos'+'/'+ 'user_'+userid+'_CODE_A.jpg';
+ 
+                     }else{
+                         fs.writeFileSync(curr_img_a, imageBuffer, 'utf8');
+                         imagePathOnDB = 'profilephotos'+'/'+ 'user_'+userid+'_CODE_A.jpg';
+                     }
+ 
+ 
+ 
+                     mysqlConnectionfidsbay.query("UPDATE members SET profilephoto = ? WHERE id = ?",[imagePathOnDB,userid],function (err,rows,fields) {
+ 
+                         if (!err) {
+                             
+                             res.send({
+                                 status: 'ok',
+                                 body: {imagePathOnDB: imagePathOnDB},
+                                 message: 'Update successfully'
+                             })
+ 
+                         }else{
+                             console.log(err);
+                             res.send({
+                                 status: 'error',
+                                 message: 'Database error!'
+                             });
+                         }
+             
+                     });
+     
+     
+     
+ 
+      
+ 
+ 
+ }); //End of setup business profile photo
+ 
+ 
+
+

@@ -42,7 +42,7 @@ router.use(cors());
 
     router.post('/createAccount', (req,res) => {
 
-
+        console.log('123');
         // SECURITY PROTOCOL 1: VALIDATING CUSTOM UI KEY FROM MOBILE APP
         // SECURITY PROTOCOL 1: VALIDATING CUSTOM UI KEY FROM MOBILE APP
         // SECURITY PROTOCOL 1: VALIDATING CUSTOM UI KEY FROM MOBILE APP
