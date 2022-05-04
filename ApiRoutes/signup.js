@@ -42,7 +42,7 @@ router.use(cors());
 
     router.post('/createAccount', (req,res) => {
 
-        console.log('123');
+        // console.log('123');
         // SECURITY PROTOCOL 1: VALIDATING CUSTOM UI KEY FROM MOBILE APP
         // SECURITY PROTOCOL 1: VALIDATING CUSTOM UI KEY FROM MOBILE APP
         // SECURITY PROTOCOL 1: VALIDATING CUSTOM UI KEY FROM MOBILE APP
@@ -57,16 +57,16 @@ router.use(cors());
 
                         // Confirm Email Statment
                         if (emailCheckResult.length == 0) {
-                            console.log('pass 3');
+                            // console.log('pass 3');
 
                             // CHECK USERNAME QUERY
                             try {
                                 mysqlConnectionfidsbay.query(sql_check_username,[req.body.profileUsername],function (err,checkUsernameResult,fields) { 
-                                    console.log('pass 4');
+                                    // console.log('pass 4');
 
                                     // Confirm username Statment
                                     if (checkUsernameResult.length == 0) {
-                                        console.log('pass 5');
+                                        // console.log('pass 5');
 
                                         if (req.body.profileType == 'Chef / Catering') {
                                             var profileType         = 'Chef'
@@ -117,10 +117,10 @@ router.use(cors());
                                         // INSERT QUERY
                                         try {
                                             mysqlConnectionfidsbay.query(sql_create_account,escape_Signup_List,function (err,result2,fields) {
-                                                console.log('pass 6');
+                                                // console.log('pass 6');
 
                                                 if (!err) {
-                                                    console.log('pass 7');
+                                                    // console.log('pass 7');
 
                                                     // Getting back the values to retrieve the user ID also
                                                     const sql_get_new_user = "SELECT * FROM members WHERE profileSession = ?";
@@ -128,7 +128,7 @@ router.use(cors());
 
 
                                                         if (!err) {
-                                                            console.log(result3);
+                                                            // console.log(result3);
                                                                     
                                                             // var mailOptions = {
                                                             //     from: 'no-reply@fidsbay.com',
