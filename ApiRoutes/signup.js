@@ -82,6 +82,9 @@ router.use(cors());
                                         var profileEmail        = req.body.profileEmail
                                         var profileEmailStatus  = 'not verified'
                                         var password            = md5(req.body.password);
+                                        var profileCountry      = req.body.profileCountry;
+                                        var profileState        = '';
+                                        var profileRegion       = '';
                                         var registrationDate    = date.format(new Date(), 'ddd, MMM DD YYYY');
                                         var notification        = JSON.stringify([])
                                         var myProductCount      = 0
@@ -102,6 +105,9 @@ router.use(cors());
                                             profileEmail,
                                             profileEmailStatus,
                                             password,
+                                            profileCountry,
+                                            profileState,
+                                            profileRegion,
                                             registrationDate,
                                             notification,
                                             myProductCount,
@@ -112,7 +118,7 @@ router.use(cors());
                                             profilePoints
                                         ];
 
-                                        const sql_create_account = "INSERT INTO members VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                                        const sql_create_account = "INSERT INTO members VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
                                         // INSERT QUERY
                                         try {
