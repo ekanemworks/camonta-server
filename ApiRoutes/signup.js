@@ -115,10 +115,11 @@ router.use(cors());
                                             profileLikeForIdList,
                                             profileLikeByIdList,
                                             profileServes,
-                                            profilePoints
+                                            profilePoints,
+                                            'not verified'
                                         ];
 
-                                        const sql_create_account = "INSERT INTO members VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                                        const sql_create_account = "INSERT INTO members VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
                                         // INSERT QUERY
                                         try {

@@ -36,8 +36,43 @@ router.use(cors());
 
 
 
-router.post('/addProductInformation', (req,res) => {
-    
+router.post('/getMyProducts', (req,res) => {
+
+        // SECURITY PROTOCOL 1: VALIDATING CUSTOM UI KEY FROM MOBILE APP
+        // SECURITY PROTOCOL 1: VALIDATING CUSTOM UI KEY FROM MOBILE APP
+        // SECURITY PROTOCOL 1: VALIDATING CUSTOM UI KEY FROM MOBILE APP
+        if (req.headers.uikey == CUSTOMKEYS.uikey) {
+            console.log(req.body.productOwnerid);
+            // const sql_get_myProduct = "SELECT * FROM products WHERE products.productOwnerid =?";
+
+
+              
+            const sql_get_myProduct = "SELECT products.id, products.productCode, \
+            products.productClass, products.productType, products.productCaption, \
+            products.productItem, products.productCategory, products.productPreparationtime, \
+            products.productPrice, products.productCurrency, products.productPhotos, \
+            products.productOwnerid, products.productRating, products.productHits, \
+            products.productCountry, products.productState, products.productRegion, \
+            products.dateCreated, members.profileName, members.profileUsername, members.profilePhoto, members.profileVerificationStatus \
+            FROM products INNER JOIN members ON products.productOwnerid=members.id WHERE members.id = ? ORDER BY products.id";
+            
+             // GET PRODUCT QUERY
+            try {
+                mysqlConnectionfidsbay.query(sql_get_myProduct,[req.body.productOwnerid],function (err,result,fields) {
+                    dataResponse = {
+                        status: 'ok',
+                        body: result,
+                        message: 'Product gotten'
+                    };
+                    // console.log(dataResponse);
+
+                    res.send(dataResponse);
+                });
+
+            }catch (error) {
+                    console.log(error);
+            }
+        }
 });
 
 
