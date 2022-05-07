@@ -42,7 +42,7 @@ router.post('/getMyProducts', (req,res) => {
         // SECURITY PROTOCOL 1: VALIDATING CUSTOM UI KEY FROM MOBILE APP
         // SECURITY PROTOCOL 1: VALIDATING CUSTOM UI KEY FROM MOBILE APP
         if (req.headers.uikey == CUSTOMKEYS.uikey) {
-            console.log(req.body.productOwnerid);
+            // console.log(req.body.productOwnerid);
             // const sql_get_myProduct = "SELECT * FROM products WHERE products.productOwnerid =?";
 
 

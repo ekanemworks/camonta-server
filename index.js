@@ -108,19 +108,19 @@ app.get('/',(req,res) => {
 
 
 
-// FOR UPDATE PROFILE PHOTO
-// FOR UPDATE PROFILE PHOTO
-// FOR UPDATE PROFILE PHOTO
-// FOR UPDATE PROFILE PHOTO
-// FOR UPDATE PROFILE PHOTO
-app.post('/updateProfilePhoto', (req, res) => {
-    var base64ImageVariable =  req.body.image;
-    var userid = req.body.userid;
-    var randomvariable = uuidv4();
-    randomvariable = randomvariable.substr(0,4);
-    var imagePathOnDB = '';
- 
- 
+    // FOR UPDATE PROFILE PHOTO
+    // FOR UPDATE PROFILE PHOTO
+    // FOR UPDATE PROFILE PHOTO
+    // FOR UPDATE PROFILE PHOTO
+    // FOR UPDATE PROFILE PHOTO
+    app.post('/updateProfilePhoto', (req, res) => {
+        var base64ImageVariable =  req.body.image;
+        var userid = req.body.userid;
+        var randomvariable = uuidv4();
+        randomvariable = randomvariable.substr(0,4);
+        var imagePathOnDB = '';
+    
+    
  
              // function to decode base64
              // function to decode base64
@@ -187,14 +187,127 @@ app.post('/updateProfilePhoto', (req, res) => {
                          }
              
                      });
-     
-     
-     
+
+    }); //End 
+
+
+
+
+
+
+
+
+
+
+
+
+    // UPLOAD PRODUCT PHOTO
+    // UPLOAD PRODUCT PHOTO
+    // UPLOAD PRODUCT PHOTO
+    app.post('/uploadProductPhoto', (req, res) => {
+        var base64ImageVariableList = JSON.parse(req.body.imageList);
+        console.log(base64ImageVariableList.length+' images in this array');
+
+        var productCode = req.body.productCode;
+        var productOwnerid = req.body.productOwnerid;
+        var myProductCount = req.body.myProductCount;
+
+        var randomvariable = uuidv4();
+        randomvariable = randomvariable.substr(0,4);
+        var imagePathOnDB = '';
+        var imageDirPathForDBList = [];
+    
  
-      
+            // function to decode base64
+            // function to decode base64
+            function decodeBase64Image(dataString) {
+                 // var matches = dataString.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/),
+                 // response = {};
+             
+                 // if (matches.length !== 3) {
+                 // return new Error('Invalid input string');
+                 // }
+             
+                 // response.type = matches[1];
+                 response = new Buffer.from(dataString, 'base64');
+             
+                 return response;
+            }
+            // end of function to decode base64
+            // end of function to decode base64
+
+            // FOREACH LOOP TO ITRATE THROUGH ALL THE BASE64 IN THE LIST
+            // FOREACH LOOP TO ITRATE THROUGH ALL THE BASE64 IN THE LIST
+            base64ImageVariableList.forEach(base64ElementString => {
+                // decodedImg = decodedImg+1
+                var decodedImg = decodeBase64Image(base64ElementString);
+                console.log('inside foreach? yes');
+
+                var imageBuffer = decodedImg;
+                var productPhotoUserDir        = __dirname+'/productphotos'+'/'+ 'user_'+productOwnerid;
+                var productPhotoUserProductDir = __dirname+'/productphotos'+'/'+ 'user_'+productOwnerid+'/'+'product_'+myProductCount;
+
+                if (!fs.existsSync(productPhotoUserDir)){
+                    // if it does not exist
+
+                    // Creation of User Directory
+                    fs.mkdirSync(productPhotoUserDir);
+                }
+
+                if (!fs.existsSync(productPhotoUserProductDir)){
+                    // if it does not exist
+
+                    // Creation of UserProduct Directory
+                    fs.mkdirSync(productPhotoUserProductDir);
+                }
+
+                    // Creating a new name for File
+                    var newnameVariable = uuidv4();
+                    newnameVariable = newnameVariable.substring(0,7);
+                    var newFilename = newnameVariable+'.jpg';
+
+                    // The Directory/path where image is stored on server
+                    var productPhotUserProductoDir_Path = __dirname+'/productphotos'+'/'+ 'user_'+productOwnerid+'/'+'product_'+myProductCount+'/'+newFilename;
+                    imagePathOnDB='productphotos'+'/'+ 'user_'+productOwnerid+'/'+'product_'+myProductCount+'/'+newFilename;
+                    try{
+                        fs.writeFileSync(productPhotUserProductoDir_Path, imageBuffer, 'utf8');
+                        // Contain the List/Array of Image path to be inserted in DB
+                        imageDirPathForDBList.push(imagePathOnDB);
+                     }
+                    catch(err){
+                        console.error(err)
+                    }
+
+                
+
+
+            });
+            // END: of foreach loop
+
+            // console.log(imageDirPathForDBList);
+            var imageDirPathForDBList_stringify = JSON.stringify(imageDirPathForDBList)
+
  
- 
- }); //End of setup business profile photo
+            mysqlConnectionfidsbay.query("UPDATE products SET productPhotos = ? WHERE productCode = ?",[imageDirPathForDBList_stringify,productCode],function (err,rows,fields) {
+    
+                if (!err) {
+                                
+                    res.send({
+                        status: 'ok',
+                        message: 'Upload successful'
+                    })
+    
+                }else{
+                    console.log(err);
+                    res.send({
+                        status: 'error',
+                        message: 'Image upload error! Try later'
+                    });
+                }
+             
+            });
+    }); 
+    //End 
  
  
 
