@@ -241,7 +241,7 @@ app.get('/',(req,res) => {
             base64ImageVariableList.forEach(base64ElementString => {
                 // decodedImg = decodedImg+1
                 var decodedImg = decodeBase64Image(base64ElementString);
-                console.log('inside foreach? yes');
+                // console.log('inside foreach? yes');
 
                 var imageBuffer = decodedImg;
                 var productPhotoUserDir        = __dirname+'/productphotos'+'/'+ 'user_'+productOwnerid;

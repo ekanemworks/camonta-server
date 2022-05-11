@@ -37,7 +37,6 @@ router.use(cors());
 
 router.post('/addProductInformation', (req,res) => {
 
-    console.log('entered');
         // SECURITY PROTOCOL 1: VALIDATING CUSTOM UI KEY FROM MOBILE APP
         // SECURITY PROTOCOL 1: VALIDATING CUSTOM UI KEY FROM MOBILE APP
         // SECURITY PROTOCOL 1: VALIDATING CUSTOM UI KEY FROM MOBILE APP
@@ -85,9 +84,6 @@ router.post('/addProductInformation', (req,res) => {
                 productRegion,
                 dateCreated
             ]
-            console.log(escape_product_input);
-
-            console.log('about insert try');
 
             // INSERT PRODUCT QUERY
             // INSERT PRODUCT QUERY
@@ -109,7 +105,6 @@ router.post('/addProductInformation', (req,res) => {
                                 productCode: productCode
                             };
                             res.send(dataResponse);
-                            console.log(dataResponse);
 
                         }); 
 

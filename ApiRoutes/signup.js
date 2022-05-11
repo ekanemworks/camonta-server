@@ -94,7 +94,7 @@ router.use(cors());
                                         var profileServes           = 0
                                         var profilePoints           = 0.0
 
-                                        // 18 COLUMNS IN DB (INCLUDING ID): 17 values in LIST below
+                                        // 22 COLUMNS IN DB (INCLUDING ID): 21 values in LIST below
                                         var escape_Signup_List = [
                                             profileType,
                                             profileSession,
@@ -121,7 +121,7 @@ router.use(cors());
 
                                         const sql_create_account = "INSERT INTO members VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
-                                        // INSERT QUERY
+                                        // INSERT QUERY: NEW ACCOUNT
                                         try {
                                             mysqlConnectionfidsbay.query(sql_create_account,escape_Signup_List,function (err,result2,fields) {
                                                 // console.log('pass 6');
@@ -131,10 +131,15 @@ router.use(cors());
 
                                                     // Getting back the values to retrieve the user ID also
                                                     const sql_get_new_user = "SELECT * FROM members WHERE profileSession = ?";
-                                                    mysqlConnectionfidsbay.query(sql_get_new_user,[profileSession],function (err,result3,fields) {
+                                                    mysqlConnectionfidsbay.query(sql_get_new_user,[profileSession],function (err,resultUserData,fields) {
 
 
                                                         if (!err) {
+
+
+
+
+
                                                             // console.log(result3);
                                                                     
                                                             // var mailOptions = {
@@ -159,15 +164,63 @@ router.use(cors());
                                                             //     res.send({status: 'error'});
                                                             // }
 
+
+
+                                                            var walletCash      = 0
+                                                            var walletBonus      = 0
+                                                            if (profileCountry == 'Nigeria') {
+                                                                var walletCurrency = 'NGN'
+
+                                                            }else if (profileCountry == 'Ghana') {
+                                                                var walletCurrency = 'GH₵'
+
+                                                            }else if (profileCountry == 'Kenya') {
+                                                                var walletCurrency = 'KSh'
+
+                                                            }else if (profileCountry == 'South Africa') {
+                                                                var walletCurrency = 'ZAR'
+
+                                                            }
+                                                            var walletTransactionHistory  = JSON.stringify([])
+                                                            var walletPassword = password
+                                                            // 7 COLUMNS IN DB (INCLUDING ID): 6 values in LIST below
+                                                            var escape_wallet_input_List = [
+                                                                resultUserData[0]['id'],
+                                                                walletCash,
+                                                                walletBonus,
+                                                                walletCurrency,
+                                                                walletTransactionHistory,
+                                                                walletPassword,
+                                                            ];
+                                                            const sql_create_wallet = "INSERT INTO cwallet VALUES (NULL,?,?,?,?,?,?)";
+                                                            // INSERT QUERY: NEW WALLET
+                                                            try {
+                                                                mysqlConnectionfidsbay.query(sql_create_wallet,escape_wallet_input_List,function (err,result2,fields) {
+                                                                    // console.log('pass 6');
+
                                                                     dataResponse = {
                                                                         status: 'ok',
-                                                                        body: result3[0],
+                                                                        body: resultUserData[0],
                                                                         direction: 'home',
                                                                         message: 'Signup successful'
                                                                     }
                                                                     // console.log(bodyResponse);
                 
                                                                     res.send(dataResponse);
+                                                                });
+                                
+                                                            } catch (error) {
+                                                                console.log(error);
+                                                                dataResponse = {
+                                                                    status: 'error',
+                                                                    message: 'Wallet creation error!'
+                                                                }
+                                                                // console.log(bodyResponse);
+            
+                                                                res.send(dataResponse);
+                                                            }
+                                                    
+
 
                                                         }else{
                                                             
@@ -181,6 +234,7 @@ router.use(cors());
                                                 }          
 
                                             });
+                                            // END OF:: INSERT QUERY: NEW ACCOUNT
                                         } catch (error) {
                                             
                                         }

@@ -42,6 +42,8 @@ router.use('/api1.0/editprofile', require('./editprofile'));
 router.use('/api1.0/addproduct', require('./addproduct'));
 router.use('/api1.0/appbase', require('./appbase'));
 router.use('/api1.0/getproducts', require('./getproducts'));
+router.use('/api1.0/wallet', require('./wallet'));
+router.use('/api1.0/feeds', require('./feeds'));
 
 
 
