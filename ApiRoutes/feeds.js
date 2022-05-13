@@ -65,9 +65,11 @@ router.post('/getChefs', (req,res) => {
 
 
 router.post('/getRecommendations/:page', (req,res) => {
-    console.log('call Recommended');
-    var page = req.params.page;
+    // console.log('call Recommended');
+    var profileCountry = req.body.profileCountry;
+    console.log(profileCountry);
     var productCount = req.body.productCount;
+    console.log('product Count '+productCount);
     var startId = req.body.start;
     var endId = startId + 5; // but this endId should be the less than the total amount of value in the database, else and error will occur
     if (endId>productCount) {
@@ -87,11 +89,11 @@ router.post('/getRecommendations/:page', (req,res) => {
         if (startId == 1) {
 
             // SQL_STATEMENTS: get total product count
-            const sql_get_totalProducts_count = "SELECT * FROM products";
+            const sql_get_totalProducts_count = "SELECT * FROM products WHERE productCountry=?";
 
             // query: get total product count
             try {
-                mysqlConnectionfidsbay.query(sql_get_totalProducts_count,function (err,resultProducts,fields) {
+                mysqlConnectionfidsbay.query(sql_get_totalProducts_count,[profileCountry],function (err,resultProducts,fields) {
                     var productsCount = resultProducts.length;
 
                     // sql: get product lists
@@ -102,12 +104,12 @@ router.post('/getRecommendations/:page', (req,res) => {
                     products.productOwnerid, products.productRating, products.productHits, \
                     products.productCountry, products.productState, products.productRegion, \
                     products.dateCreated, members.profileName, members.profileUsername, members.profilePhoto, members.profileVerificationStatus \
-                    FROM products INNER JOIN members ON products.productOwnerid=members.id WHERE products.id BETWEEN ? AND ?\
+                    FROM products INNER JOIN members ON products.productOwnerid=members.id WHERE products.productCountry = ? AND products.id BETWEEN ? AND ?\
                     ORDER BY id";
         
                         // query: get PRODUCT List
                         try {
-                            mysqlConnectionfidsbay.query(sql_get_myProduct,[startId,endId],function (err,result,fields) {
+                            mysqlConnectionfidsbay.query(sql_get_myProduct,[profileCountry,startId,endId],function (err,result,fields) {
                                 dataResponse = {
                                     status: 'ok',
                                     body: result,
@@ -142,12 +144,12 @@ router.post('/getRecommendations/:page', (req,res) => {
             products.productOwnerid, products.productRating, products.productHits, \
             products.productCountry, products.productState, products.productRegion, \
             products.dateCreated, members.profileName, members.profileUsername, members.profilePhoto, members.profileVerificationStatus \
-            FROM products INNER JOIN members ON products.productOwnerid=members.id WHERE products.id BETWEEN ? AND ?\
+            FROM products INNER JOIN members ON products.productOwnerid=members.id WHERE products.productCountry = ? AND products.id BETWEEN ? AND ?\
             ORDER BY id";
 
                 // GET PRODUCT QUERY
                 try {
-                    mysqlConnectionfidsbay.query(sql_get_myProduct,[startId,endId],function (err,result,fields) {
+                    mysqlConnectionfidsbay.query(sql_get_myProduct,[profileCountry, startId,endId],function (err,result,fields) {
                         dataResponse = {
                             status: 'ok',
                             body: result,
