@@ -80,6 +80,13 @@ router.use(cors());
 
         } catch (error) {
             console.log(error);   
+            dataResponse = {
+                status: 'error',
+                // body: {newpassword: newpw},
+                // direction: 'editprofile',
+                message: 'Server Error'
+            }                    
+            res.send(dataResponse)
         }
 
     });  

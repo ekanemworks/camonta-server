@@ -9,7 +9,7 @@ var mysqlConnectionfidsbay = mysql.createConnection({
     host: 'localhost', //WEbsite can be inserted here
     user: 'root',
     password: '',
-    database: 'camonta',
+    database: 'creftBOX',
     multipleStatements: true
 });
 

@@ -51,36 +51,27 @@ router.use(cors());
             const sql_check_email = "SELECT * FROM members WHERE profileEmail = ?";
             const sql_check_username = "SELECT * FROM members WHERE profileUsername = ?";
 
-                // CHECK EMAIL QUERY
+                // CHECK IF EMAIL EXIST
                 try {
                     mysqlConnectionfidsbay.query(sql_check_email,[req.body.profileEmail],function (err,emailCheckResult,fields) {
 
-                        // Confirm Email Statment
+                        // Confirm Email doesn't exist
                         if (emailCheckResult.length == 0) {
-                            // console.log('pass 3');
 
-                            // CHECK USERNAME QUERY
+                            // CHECK IF USERNAME EXIST
                             try {
                                 mysqlConnectionfidsbay.query(sql_check_username,[req.body.profileUsername],function (err,checkUsernameResult,fields) { 
-                                    // console.log('pass 4');
 
-                                    // Confirm username Statment
+                                    // Confirm username doesn't exist
                                     if (checkUsernameResult.length == 0) {
-                                        // console.log('pass 5');
-
-                                        if (req.body.profileType == 'Chef / Catering') {
-                                            var profileType         = 'Chef'
-                                        }else{
-                                            var profileType         = req.body.profileType
-                                        }
-
+                                        var profileType         = req.body.profileName
                                         var profileSession      = uuidv4()
                                         var profileName         = req.body.profileName
                                         var profileUsername     = req.body.profileUsername
                                         var profilePhoto        = req.body.profilePhoto
-                                        var profileBio          = req.body.profileBio
+                                        var profileBio          = 'Hi everyone, i am new here'
                                         var profileEmail        = req.body.profileEmail
-                                        var profileEmailStatus  = 'not verified'
+                                        var profileEmailVerified  = 'false'
                                         var password            = md5(req.body.password);
                                         var profileCountry      = req.body.profileCountry;
                                         var profileState        = '';
@@ -103,9 +94,10 @@ router.use(cors());
                                             profilePhoto,
                                             profileBio,
                                             profileEmail,
-                                            profileEmailStatus,
+                                            profileEmailVerified,
                                             password,
                                             profileCountry,
+                                            'NGN',
                                             profileState,
                                             profileRegion,
                                             registrationDate,
@@ -116,10 +108,10 @@ router.use(cors());
                                             profileLikeByIdList,
                                             profileServes,
                                             profilePoints,
-                                            'not verified'
+                                            'false'
                                         ];
 
-                                        const sql_create_account = "INSERT INTO members VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                                        const sql_create_account = "INSERT INTO members VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
                                         // INSERT QUERY: NEW ACCOUNT
                                         try {
@@ -138,6 +130,15 @@ router.use(cors());
 
 
 
+                                                                    dataResponse = {
+                                                                        status: 'ok',
+                                                                        body: resultUserData[0],
+                                                                        direction: 'home',
+                                                                        message: 'Signup successful'
+                                                                    }
+                                                                    // console.log(bodyResponse);
+                
+                                                                    res.send(dataResponse);
 
 
                                                             // console.log(result3);
@@ -166,59 +167,59 @@ router.use(cors());
 
 
 
-                                                            var walletCash      = 0
-                                                            var walletBonus      = 0
-                                                            if (profileCountry == 'Nigeria') {
-                                                                var walletCurrency = 'NGN'
+                                                            // var walletCash      = 0
+                                                            // var walletBonus      = 0
+                                                            // if (profileCountry == 'Nigeria') {
+                                                            //     var walletCurrency = 'NGN'
 
-                                                            }else if (profileCountry == 'Ghana') {
-                                                                var walletCurrency = 'GH₵'
+                                                            // }else if (profileCountry == 'Ghana') {
+                                                            //     var walletCurrency = 'GH₵'
 
-                                                            }else if (profileCountry == 'Kenya') {
-                                                                var walletCurrency = 'KSh'
+                                                            // }else if (profileCountry == 'Kenya') {
+                                                            //     var walletCurrency = 'KSh'
 
-                                                            }else if (profileCountry == 'South Africa') {
-                                                                var walletCurrency = 'ZAR'
+                                                            // }else if (profileCountry == 'South Africa') {
+                                                            //     var walletCurrency = 'ZAR'
 
-                                                            }
-                                                            var walletTransactionHistory  = JSON.stringify([])
-                                                            var walletPassword = password
-                                                            // 7 COLUMNS IN DB (INCLUDING ID): 6 values in LIST below
-                                                            var escape_wallet_input_List = [
-                                                                resultUserData[0]['id'],
-                                                                walletCash,
-                                                                walletBonus,
-                                                                walletCurrency,
-                                                                walletTransactionHistory,
-                                                                walletPassword,
-                                                            ];
-                                                            const sql_create_wallet = "INSERT INTO cwallet VALUES (NULL,?,?,?,?,?,?)";
-                                                            // INSERT QUERY: NEW WALLET
-                                                            try {
-                                                                mysqlConnectionfidsbay.query(sql_create_wallet,escape_wallet_input_List,function (err,result2,fields) {
-                                                                    // console.log('pass 6');
+                                                            // }
+                                                            // var walletTransactionHistory  = JSON.stringify([])
+                                                            // var walletPassword = password
+                                                            // // 7 COLUMNS IN DB (INCLUDING ID): 6 values in LIST below
+                                                            // var escape_wallet_input_List = [
+                                                            //     resultUserData[0]['id'],
+                                                            //     walletCash,
+                                                            //     walletBonus,
+                                                            //     walletCurrency,
+                                                            //     walletTransactionHistory,
+                                                            //     walletPassword,
+                                                            // ];
+                                                            // const sql_create_wallet = "INSERT INTO cwallet VALUES (NULL,?,?,?,?,?,?)";
+                                                            // // INSERT QUERY: NEW WALLET
+                                                            // try {
+                                                            //     mysqlConnectionfidsbay.query(sql_create_wallet,escape_wallet_input_List,function (err,result2,fields) {
+                                                            //         // console.log('pass 6');
 
-                                                                    dataResponse = {
-                                                                        status: 'ok',
-                                                                        body: resultUserData[0],
-                                                                        direction: 'home',
-                                                                        message: 'Signup successful'
-                                                                    }
-                                                                    // console.log(bodyResponse);
+                                                            //         dataResponse = {
+                                                            //             status: 'ok',
+                                                            //             body: resultUserData[0],
+                                                            //             direction: 'home',
+                                                            //             message: 'Signup successful'
+                                                            //         }
+                                                            //         // console.log(bodyResponse);
                 
-                                                                    res.send(dataResponse);
-                                                                });
+                                                            //         res.send(dataResponse);
+                                                            //     });
                                 
-                                                            } catch (error) {
-                                                                console.log(error);
-                                                                dataResponse = {
-                                                                    status: 'error',
-                                                                    message: 'Wallet creation error!'
-                                                                }
-                                                                // console.log(bodyResponse);
+                                                            // } catch (error) {
+                                                            //     console.log(error);
+                                                            //     dataResponse = {
+                                                            //         status: 'error',
+                                                            //         message: 'Wallet creation error!'
+                                                            //     }
+                                                            //     // console.log(bodyResponse);
             
-                                                                res.send(dataResponse);
-                                                            }
+                                                            //     res.send(dataResponse);
+                                                            // }
                                                     
 
 

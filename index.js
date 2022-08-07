@@ -90,10 +90,10 @@ mysqlConnectionfidsbay.connect((err) => {
 // app.listen(3000, () => console.log('App Server Running'));
 
 // RUN ON LOCAL MACHINE
-// app.listen(3000, '192.168.0.126', ()=> console.log("App server running on IP")); // COUSANT WIFI
-// app.listen(3000, '192.168.8.197', ()=> console.log("App server running on IP")); // COMPOSITE WIFI
-// app.listen(3000, '192.168.43.170', ()=> console.log("App server running on IP")); // CAMONTA WIFI
-app.listen(3000, ()=> console.log("Main server running on localhost")); // WITHOUT WIFI
+// app.listen(3000, '172.20.10.3', ()=> console.log("App server running on IP")); // IPHONE WIFI
+app.listen(3000, '192.168.0.169', ()=> console.log("App server running on wifi IP")); // SpaceX WIFI
+// app.listen(3000, '192.168.30.63', ()=> console.log("App server running on VALINNO IP")); // CAMONTA WIFI
+// app.listen(3000, ()=> console.log("Main server running on localhost")); // WITHOUT WIFI
 
 
 
@@ -104,6 +104,14 @@ app.listen(3000, ()=> console.log("Main server running on localhost")); // WITHO
 
 app.get('/',(req,res) => {
     res.send('Camonta Server')
+})
+
+app.get('/testboy',(req,res) => {
+    var ourjson = {
+        status: "ok",
+        message: "successful"
+    }
+    res.send(ourjson)
 })
 
 
@@ -168,7 +176,7 @@ app.get('/',(req,res) => {
  
  
  
-                     mysqlConnectionfidsbay.query("UPDATE members SET profilephoto = ? WHERE id = ?",[imagePathOnDB,userid],function (err,rows,fields) {
+                     mysqlConnectionfidsbay.query("UPDATE members SET profilePhoto = ? WHERE id = ?",[imagePathOnDB,userid],function (err,rows,fields) {
  
                          if (!err) {
                              

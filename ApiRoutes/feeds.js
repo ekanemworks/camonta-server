@@ -88,7 +88,7 @@ router.post('/getRecommendations/:page', (req,res) => {
         // First Time touching server: to get total possible values/records, to limit endId
         if (startId == 1) {
 
-            // SQL_STATEMENTS: get total product count
+            // SQL_STATEMENTS: to get total product count, to be used later
             const sql_get_totalProducts_count = "SELECT * FROM products WHERE productCountry=?";
 
             // query: get total product count
